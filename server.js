@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 
+var cors = require("cors");
+app.use(cors());
 const PORT = 3212;
 const FILE = "./feedbacks.json";
 
@@ -23,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/feedbacks", async function(req, res) {
+  req.header("Access-Control-Allow-Origin", "*");
   await writeToFile(req.body);
   res.json({
     success: true,
@@ -31,6 +34,7 @@ app.post("/feedbacks", async function(req, res) {
 });
 
 app.get("/feedbacks", async function(req, res) {
+  req.header("Access-Control-Allow-Origin", "*");
   res.json({
     success: true,
     body: await readFromFile()
